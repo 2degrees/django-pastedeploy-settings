@@ -1,10 +1,11 @@
-**************************************************
-twod.wsgi -- WSGI as first-class citizen in Django
-**************************************************
+***************************************************************
+Conversion of Paste Deployment configuration to Django settings
+***************************************************************
 
-twod.wsgi unlocks Django applications so developers can take advantage of the
-wealth of existing WSGI software, as the other popular Python frameworks do. It
-won't break you existing Django applications because it's 100% compatible with
-Django and you can start using the functionality offered by this library
-progressively. It should be really easy to get started, particularly for
-developers who are familiar with frameworks like Pylons or TurboGears.
+`Paste Deployment <http://pythonpaste.org/deploy/>`_ is a widely-used system
+which has the sole purpose of enabling developers and sysadmins to configure
+WSGI applications (like Django) and WSGI servers.
+
+This project dynamically converts Paste Deployment configuration files to
+Django settings, offering a more maintainable way to manage the configuration
+of your Django projects.
