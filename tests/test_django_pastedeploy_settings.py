@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2010, 2degrees Limited <gustavonarea@2degreesnetwork.com>.
+# Copyright (c) 2010, 2013, 2degrees Limited.
 # All Rights Reserved.
 #
 # This file is part of twod.wsgi <https://github.com/2degrees/twod.wsgi/>,
@@ -22,13 +22,14 @@ import os
 from nose.tools import eq_, ok_, assert_false, assert_raises
 from django.core.handlers.wsgi import WSGIHandler
 
-from twod.wsgi.appsetup import (wsgify_django, _set_up_settings,
+from django_pastedeploy_settings import (wsgify_django, _set_up_settings,
     _convert_options, _DJANGO_BOOLEANS, _DJANGO_INTEGERS,
     _DJANGO_NESTED_TUPLES, _DJANGO_TUPLES, _DJANGO_DICTIONARIES,
     _DJANGO_NONE_IF_EMPTY_SETTINGS, _DJANGO_UNSUPPORTED_SETTINGS,
     as_tree_tuple, _DJANGO_TREE_TUPLES)
 
-from tests import BaseDjangoTestCase
+from tests.utils import BaseDjangoTestCase
+from tests.utils import MockApp
 
 _HERE = os.path.dirname(__file__)
 _FIXTURES = os.path.join(_HERE, "fixtures", "sampledjango")
@@ -39,21 +40,49 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
     
     setup_fixture = False
     
-    def test_it(self):
+    def test_debug_flag_source(self):
+        """
+        The "debug" flag from the global_conf takes precedence over local_conf.
+        
+        """
         global_conf = {
             'debug': "no",
-            'django_settings_module': "tests.fixtures.sampledjango.settings",
+            'django_settings_module': "tests.fixtures.sampledjango.settings3",
+            }
+        wsgify_django(global_conf, debug="yes")
+        
+        from django.conf import settings
+        assert_false(settings.DEBUG)
+    
+    def test_local_conf(self):
+        global_conf = {
+            'debug': "no",
+            'django_settings_module': "tests.fixtures.sampledjango.settings4",
+            }
+        wsgify_django(global_conf, FOO=10)
+        
+        from django.conf import settings
+        eq_(settings.FOO, 10)
+    
+    def test_default_application(self):
+        global_conf = {
+            'debug': "no",
+            'django_settings_module': "tests.fixtures.sampledjango.settings5",
+            }
+        app = wsgify_django(global_conf)
+        
+        eq_(app.__class__, WSGIHandler)
+    
+    def test_custom_application(self):
+        global_conf = {
+            'debug': "no",
+            'django_settings_module': "tests.fixtures.sampledjango.settings6",
             }
         app = wsgify_django(
             global_conf,
-            FOO=10,
-            debug="yes",
+            WSGI_APPLICATION="tests.utils.MOCK_WSGI_APP",
             )
-        
-        ok_(isinstance(app, WSGIHandler))
-        from django.conf import settings
-        assert_false(settings.DEBUG)
-        eq_(settings.FOO, 10)
+        ok_(isinstance(app, MockApp))
 
 
 class TestSettingUpSettings(BaseDjangoTestCase):
@@ -141,8 +170,6 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         
         eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.fixtures.list_module")
         eq_(list_module.DA_LIST, (1, 2, 3, 8, 9))
-        
-        
     
     def test_non_django_settings_module(self):
         """

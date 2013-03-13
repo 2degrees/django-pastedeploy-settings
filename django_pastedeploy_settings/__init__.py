@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2010, 2degrees Limited <gustavonarea@2degreesnetwork.com>.
+# Copyright (c) 2010, 2013, 2degrees Limited.
 # All Rights Reserved.
 #
 # This file is part of twod.wsgi <https://github.com/2degrees/twod.wsgi/>,
@@ -20,10 +20,9 @@ Utilities to set up Django applications, both in Web and CLI environments.
 import os
 from logging import getLogger
 
+from django.core.servers.basehttp import get_internal_wsgi_application
 from paste.deploy.loadwsgi import appconfig
 from paste.deploy.converters import asbool, asint, aslist
-
-from twod.wsgi.handler import DjangoApplication
 
 
 __all__ = ("wsgify_django", )
@@ -31,6 +30,7 @@ __all__ = ("wsgify_django", )
 
 _TUPLE_INDENTATION_SYMBOL = "-"
 """Symbol used to denote an indentation level for tree tuples""" 
+
 
 _LOGGER = getLogger(__name__)
 
@@ -50,12 +50,14 @@ def wsgify_django(global_config, **local_conf):
     
     """
     _set_up_settings(global_config, local_conf)
-    return DjangoApplication()
+    wsgi_application = get_internal_wsgi_application()
+    return wsgi_application
 
 
 def _set_up_settings(global_conf, local_conf):
     """
-    Add the PasteDeploy options to the DJANGO_SETTINGS_MODULE module.
+    Add the PasteDeploy options ``global_conf`` and ``local_conf`` to the
+    Django settings module.
     
     """
     django_settings_module = global_conf.get("django_settings_module")
@@ -167,6 +169,7 @@ _DJANGO_NONE_IF_EMPTY_SETTINGS = frozenset([
     "SESSION_FILE_PATH",
     "STATIC_URL",
     ])
+
 
 # TODO: The following settings should be supported:
 _DJANGO_UNSUPPORTED_SETTINGS = frozenset([
