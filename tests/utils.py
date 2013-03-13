@@ -30,7 +30,7 @@ class BaseDjangoTestCase(object):
     
     """
     
-    django_settings_module = "tests.fixtures.sampledjango.settings"
+    django_settings_module = "tests.mock_django_settings.settings"
     
     setup_fixture = True
     

@@ -4,8 +4,9 @@
 # Copyright (c) 2010, 2013, 2degrees Limited.
 # All Rights Reserved.
 #
-# This file is part of twod.wsgi <https://github.com/2degrees/twod.wsgi/>,
-# which is subject to the provisions of the BSD at
+# This file is part of django-pastedeploy-settings
+# <https://github.com/2degrees/django-pastedeploy-settings>, which is subject
+# to the provisions of the BSD at
 # <http://dev.2degreesnetwork.com/p/2degrees-license.html>. A copy of the
 # license should accompany this distribution. THIS SOFTWARE IS PROVIDED "AS IS"
 # AND ANY AND ALL EXPRESS OR IMPLIED WARRANTIES ARE DISCLAIMED, INCLUDING, BUT
@@ -32,7 +33,7 @@ from tests.utils import BaseDjangoTestCase
 from tests.utils import MockApp
 
 _HERE = os.path.dirname(__file__)
-_FIXTURES = os.path.join(_HERE, "fixtures", "sampledjango")
+_FIXTURES = os.path.join(_HERE, "mock_django_settings")
 
 
 class TestDjangoWsgifytor(BaseDjangoTestCase):
@@ -47,7 +48,7 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
         """
         global_conf = {
             'debug': "no",
-            'django_settings_module': "tests.fixtures.sampledjango.settings3",
+            'django_settings_module': "tests.mock_django_settings.settings3",
             }
         wsgify_django(global_conf, debug="yes")
         
@@ -57,7 +58,7 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
     def test_local_conf(self):
         global_conf = {
             'debug': "no",
-            'django_settings_module': "tests.fixtures.sampledjango.settings4",
+            'django_settings_module': "tests.mock_django_settings.settings4",
             }
         wsgify_django(global_conf, FOO=10)
         
@@ -67,7 +68,7 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
     def test_default_application(self):
         global_conf = {
             'debug': "no",
-            'django_settings_module': "tests.fixtures.sampledjango.settings5",
+            'django_settings_module': "tests.mock_django_settings.settings5",
             }
         app = wsgify_django(global_conf)
         
@@ -76,7 +77,7 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
     def test_custom_application(self):
         global_conf = {
             'debug': "no",
-            'django_settings_module': "tests.fixtures.sampledjango.settings6",
+            'django_settings_module': "tests.mock_django_settings.settings6",
             }
         app = wsgify_django(
             global_conf,
@@ -97,16 +98,16 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = {
             'debug': "yes",
-            'django_settings_module': "tests.fixtures.empty_module",
+            'django_settings_module': "tests.mock_django_settings.empty_module",
             }
         local_conf = {
             'setting1': object(),
             'setting2': object(),
             }
         _set_up_settings(global_conf, local_conf)
-        from tests.fixtures import empty_module
+        from tests.mock_django_settings import empty_module
         
-        eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.fixtures.empty_module")
+        eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.mock_django_settings.empty_module")
         ok_(hasattr(empty_module, "setting1"))
         ok_(hasattr(empty_module, "setting2"))
         eq_(empty_module.setting1, local_conf['setting1'])
@@ -120,12 +121,12 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = {
             'debug': "yes",
-            'django_settings_module': "tests.fixtures.empty_module2",
+            'django_settings_module': "tests.mock_django_settings.empty_module2",
             }
         _set_up_settings(global_conf, {})
-        from tests.fixtures import empty_module2
+        from tests.mock_django_settings import empty_module2
         
-        eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.fixtures.empty_module2")
+        eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.mock_django_settings.empty_module2")
         # Ignoring the built-in members:
         scope = [value for value in dir(empty_module2)
                  if not value.startswith("__") and value.endswith("__")]
@@ -138,19 +139,19 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = {
             'debug': "yes",
-            'django_settings_module': "tests.fixtures.one_member_module",
+            'django_settings_module': "tests.mock_django_settings.one_member_module",
             }
         local_conf = {
             'MEMBER': "FOO",
             }
         _set_up_settings(global_conf, local_conf)
-        from tests.fixtures import one_member_module
+        from tests.mock_django_settings import one_member_module
         
         eq_(os.environ['DJANGO_SETTINGS_MODULE'],
-            "tests.fixtures.one_member_module")
+            "tests.mock_django_settings.one_member_module")
         eq_(one_member_module.MEMBER, "MEMBER")
         ok_(len(self.logs['warning']), 1)
-        eq_('"MEMBER" will not be overridden in tests.fixtures.one_member_module',
+        eq_('"MEMBER" will not be overridden in tests.mock_django_settings.one_member_module',
             self.logs['warning'][0])
     
     def test_list(self):
@@ -160,15 +161,15 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = {
             'debug': "yes",
-            'django_settings_module': "tests.fixtures.list_module",
+            'django_settings_module': "tests.mock_django_settings.list_module",
             }
         local_conf = {
             'DA_LIST': (8, 9),
             }
         _set_up_settings(global_conf, local_conf)
-        from tests.fixtures import list_module
+        from tests.mock_django_settings import list_module
         
-        eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.fixtures.list_module")
+        eq_(os.environ['DJANGO_SETTINGS_MODULE'], "tests.mock_django_settings.list_module")
         eq_(list_module.DA_LIST, (1, 2, 3, 8, 9))
     
     def test_non_django_settings_module(self):
@@ -185,7 +186,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """DEBUG must not be set in the Django settings module."""
         global_conf = {
             'django_settings_module':
-                "tests.fixtures.sampledjango.debug_settings",
+                "tests.mock_django_settings.debug_settings",
             }
         assert_raises(ValueError, _set_up_settings, global_conf, {})
     

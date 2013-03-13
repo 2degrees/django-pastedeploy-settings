@@ -4,8 +4,9 @@
 # Copyright (c) 2010, 2013, 2degrees Limited.
 # All Rights Reserved.
 #
-# This file is part of twod.wsgi <https://github.com/2degrees/twod.wsgi/>,
-# which is subject to the provisions of the BSD at
+# This file is part of django-pastedeploy-settings
+# <https://github.com/2degrees/django-pastedeploy-settings>, which is subject
+# to the provisions of the BSD at
 # <http://dev.2degreesnetwork.com/p/2degrees-license.html>. A copy of the
 # license should accompany this distribution. THIS SOFTWARE IS PROVIDED "AS IS"
 # AND ANY AND ALL EXPRESS OR IMPLIED WARRANTIES ARE DISCLAIMED, INCLUDING, BUT
@@ -13,9 +14,3 @@
 # INFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
-Mock Django application to test the repoze.what Django plugin.
-
-"""
-
-mock_view = lambda request: "Response"
