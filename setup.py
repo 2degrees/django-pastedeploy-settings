@@ -41,20 +41,19 @@ setup(name="django-pastedeploy-settings",
         "Topic :: Internet :: WWW/HTTP :: WSGI",
         "Topic :: Security",
         ],
-      keywords="django wsgi paste webob web",
+      keywords="django wsgi paste web",
       author="2degrees Limited",
       author_email="2degrees-floss@googlegroups.com",
-      url="http://packages.python.org/twod.wsgi/",
+      url="http://pythonhosted.org/django-pastedeploy-settings/",
       license="BSD (http://dev.2degreesnetwork.com/p/2degrees-license.html)",
       packages=find_packages(exclude=["tests"]),
       py_modules=["django_testing", "django_testing_recipe"],
       zip_safe=False,
-      tests_require=[
-        "coverage",
-        ],
+      tests_require=["coverage"],
       install_requires=[
-        "Django >= 1.4",
+        "Django >= 1.1",
         "PasteDeploy >= 1.3.3, <= 1.5.0",
+        "Paste >= 1.7.2, <= 1.7.5.1",
         "setuptools",
         "nose",
         ],
@@ -67,7 +66,7 @@ setup(name="django-pastedeploy-settings",
         main = django_pastedeploy_settings:wsgify_django
         
         [paste.composite_factory]
-        full_django = twod.wsgi.factories:make_full_django_app
+        full_django = django_pastedeploy_settings.factories:make_full_django_app
         
         [nose.plugins.0.10]
         django-wsgified = django_testing:DjangoWsgifiedPlugin
