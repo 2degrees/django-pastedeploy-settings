@@ -30,7 +30,7 @@ __all__ = ("wsgify_django", )
 
 
 _TUPLE_INDENTATION_SYMBOL = "-"
-"""Symbol used to denote an indentation level for tree tuples""" 
+"""Symbol used to denote an indentation level for tree tuples"""
 
 
 _LOGGER = getLogger(__name__)
@@ -46,8 +46,8 @@ def wsgify_django(global_config, **local_conf):
     :raises ValueError: If the ``django_settings_module`` directive is not set.
     :raises ValueError: If Django's ``DEBUG`` is set instead of Paste's
         ``debug``.
-    :return: The Django application as a WSGI application.
-    :rtype: :class:`~twod.wsgi.handler.DjangoApplication`
+    :return: The WSGI application for Django as returned by
+        :func:`~django.core.servers.basehttp.get_internal_wsgi_application`.
     
     """
     _set_up_settings(global_config, local_conf)
