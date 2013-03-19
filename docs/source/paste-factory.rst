@@ -26,7 +26,8 @@ If you do, you can define your own factory. Either way, all these options will
 be available as settings within Django.
 
 The following is a minimal configuration file which uses the Application Factory
-provided by *django-pastedeploy-settings*.
+provided by *django-pastedeploy-settings*. You can also :download:`download
+a complete example <_static/simplest-settings.ini>`.
 
 .. code-block:: ini
 
