@@ -25,7 +25,7 @@ version = open(os.path.join(here, "VERSION.txt")).readline().rstrip()
 
 setup(name="django-pastedeploy-settings",
       version=version,
-      description="Enhanced WSGI support for Django applications",
+      description="Conversion of Paste Deployment configuration to Django settings",
       long_description=README,
       classifiers=[
         "Development Status :: 3 - Alpha",
