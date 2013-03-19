@@ -226,13 +226,13 @@ class TestSettingsConvertion(object):
         """Custom booleans should be converted."""
         global_conf = {
             'debug': "yes",
-            'twod.booleans': ("mybool", ),
+            'custom_settings.booleans': ("mybool", ),
             }
         local_conf = {'mybool': "no"}
         settings = _convert_options(global_conf, local_conf)
         
         eq_(settings['mybool'], False)
-        assert_false("twod.booleans" in settings)
+        assert_false("custom_settings.booleans" in settings)
     
     def test_official_integers(self):
         """Django's integer settings must be converted."""
@@ -251,13 +251,13 @@ class TestSettingsConvertion(object):
         """Custom integers should be converted."""
         global_conf = {
             'debug': "yes",
-            'twod.integers': ("myint", ),
+            'custom_settings.integers': ("myint", ),
             }
         local_conf = {'myint': "3"}
         settings = _convert_options(global_conf, local_conf)
         
         eq_(settings['myint'], 3)
-        assert_false("twod.integers" in settings)
+        assert_false("custom_settings.integers" in settings)
     
     def test_official_tuples(self):
         """Django's tuple settings must be converted."""
@@ -277,13 +277,13 @@ class TestSettingsConvertion(object):
         items = ("foo", "bar", "baz")
         global_conf = {
             'debug': "yes",
-            'twod.tuples': ("mytuple", ),
+            'custom_settings.tuples': ("mytuple", ),
             }
         local_conf = {'mytuple': "\n " + "\n    ".join(items)}
         settings = _convert_options(global_conf, local_conf)
         
         eq_(settings['mytuple'], items)
-        assert_false("twod.tuples" in settings)
+        assert_false("custom_settings.tuples" in settings)
     
     def test_official_nested_tuples(self):
         """Django's nested tuple settings must be converted."""
@@ -303,14 +303,14 @@ class TestSettingsConvertion(object):
         nested_items = (("foo", "the bar", "baz"), ("bar", "foo"), ("baz",))
         global_conf = {
             'debug': "yes",
-            'twod.nested_tuples': ("my_nested_tuple", ),
+            'custom_settings.nested_tuples': ("my_nested_tuple", ),
             }
         local_conf = {'my_nested_tuple': "\n " + "\n    ".join(items)}
         
         settings = _convert_options(global_conf, local_conf)
         
         eq_(settings['my_nested_tuple'], nested_items)
-        assert_false("twod.nested_tuples" in settings)
+        assert_false("custom_settings.nested_tuples" in settings)
     
     def test_official_dictionaries(self):
         """Django's dictionary settings must be converted."""
@@ -332,13 +332,13 @@ class TestSettingsConvertion(object):
         items = ("foo = bar", "baz=abc", " xyz = mno ")
         global_conf = {
             'debug': "yes",
-            'twod.dictionaries': ("mydict", ),
+            'custom_settings.dictionaries': ("mydict", ),
             }
         local_conf = {'mydict': "\n " + "\n    ".join(items)}
         settings = _convert_options(global_conf, local_conf)
         
         eq_(settings['mydict'], {'foo': "bar", 'baz': "abc", 'xyz': "mno"})
-        assert_false("twod.dictionaries" in settings)
+        assert_false("custom_settings.dictionaries" in settings)
         
     def test_official_none_if_empty_settings(self):
         """Django's settings which are None if unspecified must be converted."""
@@ -358,21 +358,21 @@ class TestSettingsConvertion(object):
 
         global_conf = {
             'debug': "yes",
-            'twod.none_if_empty_settings': ("mynone", "mynonewithspace"),
+            'custom_settings.none_if_empty_settings': ("mynone", "mynonewithspace"),
             }
         local_conf = {'mynone': '', 'mynonewithspace': '    '}
         settings = _convert_options(global_conf, local_conf)
         
         ok_(settings['mynone'] is None)
         ok_(settings['mynonewithspace'] is None)
-        assert_false("twod.none_if_empty_settings" in settings)
+        assert_false("custom_settings.none_if_empty_settings" in settings)
         
     def test_non_if_empty_non_empty_settings(self):
         """Non-empty 'none if empty' settings are left as strings."""
         
         global_conf = {
             'debug': "yes",
-            'twod.none_if_empty_settings': ("mynone", "mynonewithspace"),
+            'custom_settings.none_if_empty_settings': ("mynone", "mynonewithspace"),
             }
         local_conf = {'mynone': 'I am a string',
                       'mynonewithspace': ' I am a string '}
@@ -380,7 +380,7 @@ class TestSettingsConvertion(object):
         
         eq_(settings['mynone'], 'I am a string')
         eq_(settings['mynonewithspace'], 'I am a string')
-        assert_false("twod.none_if_empty_settings" in settings)
+        assert_false("custom_settings.none_if_empty_settings" in settings)
     
     def test_strings(self):
         """
@@ -474,14 +474,14 @@ class TestSettingsConvertion(object):
             )
         global_conf = {
             'debug': "yes",
-            'twod.tree_tuples': ("my_tree_tuple", ),
+            'custom_settings.tree_tuples': ("my_tree_tuple", ),
             }
         local_conf = {'my_tree_tuple': "\n " + definition}
         
         settings = _convert_options(global_conf, local_conf)
         
         eq_(settings['my_tree_tuple'], tree_tuple)
-        assert_false("twod.tree_tuples" in settings)
+        assert_false("custom_settings.tree_tuples" in settings)
     
 
 class TestTreeTuple(object):

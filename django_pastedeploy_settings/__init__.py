@@ -199,14 +199,20 @@ def _convert_options(global_conf, local_conf):
     
     # Now it's safe to move on with the type casting:
     
-    custom_booleans = aslist(global_conf.get("twod.booleans", ""))
-    custom_integers = aslist(global_conf.get("twod.integers", ""))
-    custom_tuples = aslist(global_conf.get("twod.tuples", ""))
-    custom_nested_tuples = aslist(global_conf.get("twod.nested_tuples", ""))
-    custom_tree_tuples = aslist(global_conf.get("twod.tree_tuples", ""))
-    custom_dictionaries = aslist(global_conf.get("twod.dictionaries", ""))
+    custom_booleans = aslist(global_conf.get("custom_settings.booleans", ""))
+    custom_integers = aslist(global_conf.get("custom_settings.integers", ""))
+    custom_tuples = aslist(global_conf.get("custom_settings.tuples", ""))
+    custom_nested_tuples = aslist(
+        global_conf.get("custom_settings.nested_tuples", "")
+        )
+    custom_tree_tuples = aslist(
+        global_conf.get("custom_settings.tree_tuples", "")
+        )
+    custom_dictionaries = aslist(global_conf.get(
+        "custom_settings.dictionaries", "")
+        )
     custom_none_if_empty_settings = aslist(
-        global_conf.get("twod.none_if_empty_settings", "")
+        global_conf.get("custom_settings.none_if_empty_settings", "")
         )
     
     booleans = _DJANGO_BOOLEANS | frozenset(custom_booleans)

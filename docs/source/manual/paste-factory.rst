@@ -173,7 +173,7 @@ automatically too, you can list them all in the ``DEFAULT`` section:
 
     [DEFAULT]
     # ...
-    twod.booleans =
+    custom_settings.booleans =
         MY_BOOL1
         MY_BOOL2
     # ...
@@ -192,14 +192,14 @@ Integers
 --------
 
 Django integer settings like ``EMAIL_PORT`` and ``DATABASE_PORT`` will get
-converted automatically if they're set. Use the ``twod.integers`` option to
+converted automatically if they're set. Use the ``custom_settings.integers`` option to
 have yours converted too:
 
 .. code-block:: ini
 
     [DEFAULT]
     # ...
-    twod.integers =
+    custom_settings.integers =
         MY_INT
     # ...
     
@@ -221,14 +221,14 @@ Tuples
 ------
 
 Again, built-in tuple settings in Django are converted automatically. To have
-your tuples converted too, use the ``twod.tuples`` option in the ``DEFAULT``
+your tuples converted too, use the ``custom_settings.tuples`` option in the ``DEFAULT``
 section:
 
 .. code-block:: ini
 
     [DEFAULT]
     # ...
-    twod.tuples =
+    custom_settings.tuples =
         COLLECTION1
         COLLECTION2
         COLLECTION3
@@ -299,13 +299,13 @@ Nested tuples
 -------------
 
 Django's nested tuple settings (e.g., ``ADMINS``) are converted automatically
-and custom settings can be converted using the ``twod.nested_tuples``:
+and custom settings can be converted using the ``custom_settings.nested_tuples``:
 
 .. code-block:: ini
 
     [DEFAULT]
     # ...
-    twod.nested_tuples =
+    custom_settings.nested_tuples =
         YOUR_NESTED_TUPLE
     # ...
     
@@ -332,7 +332,7 @@ Dictionaries can be used almost the same way you use `nested tuples`_:
 
     [DEFAULT]
     # ...
-    twod.dictionaries =
+    custom_settings.dictionaries =
         YOUR_DICTIONARY
     # ...
     
@@ -365,7 +365,7 @@ empty, otherwise they will be left as a string.:
 
     [DEFAULT]
     # ...
-    twod.none_if_empty_settings =
+    custom_settings.none_if_empty_settings =
         YOUR_POTENTIALLY_NONE_SETTING
     # ...
     
@@ -396,7 +396,7 @@ Alternatively these two settings can be defined and will be left as strings:
 
     [DEFAULT]
     # ...
-    twod.none_if_empty_settings =
+    custom_settings.none_if_empty_settings =
         YOUR_POTENTIALLY_NONE_SETTING
     # ...
     
