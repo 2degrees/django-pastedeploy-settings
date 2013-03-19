@@ -21,7 +21,6 @@ Utilities to set up Django applications, both in Web and CLI environments.
 import os
 from logging import getLogger
 
-from django.core.servers.basehttp import get_internal_wsgi_application
 from paste.deploy.loadwsgi import appconfig
 from paste.deploy.converters import asbool, asint, aslist
 
@@ -51,6 +50,14 @@ def wsgify_django(global_config, **local_conf):
     
     """
     _set_up_settings(global_config, local_conf)
+    
+    return _get_django_wsgi_app()
+
+
+def _get_django_wsgi_app():
+    # The following module can only be imported after the settings have been
+    # set.
+    from django.core.servers.basehttp import get_internal_wsgi_application
     wsgi_application = get_internal_wsgi_application()
     return wsgi_application
 
