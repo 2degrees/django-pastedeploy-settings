@@ -9,11 +9,6 @@ Table of contents
    :maxdepth: 2
    
    paste-factory
-   request-objects
-   embedded-apps
-   media-apps
-   routing-args
-   responses
    testing
 
 

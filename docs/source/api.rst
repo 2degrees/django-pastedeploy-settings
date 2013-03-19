@@ -1,36 +1,13 @@
-======================================
-API documentation for :mod:`twod.wsgi`
-======================================
+========================================================
+API documentation for :mod:`django_pastedeploy_settings`
+========================================================
 
-.. automodule:: twod.wsgi
-    :synopsis: Enhanced WSGI support for Django
-    :members: DjangoApplication, TwodResponse
-    :show-inheritance:
-
-
-.. autoclass:: twod.wsgi.handler.TwodWSGIRequest
-    :show-inheritance:
-
-Embedded applications
-=====================
-
-.. autofunction:: make_wsgi_view
-
-.. autofunction:: call_wsgi_app
+.. automodule:: django_pastedeploy_settings
+    :synopsis: Conversion of Paste Deployment configuration to Django settings
+    :members: wsgify_django
 
 
 Media serving
 =============
 
-.. autofunction:: twod.wsgi.factories.add_media_to_app
-
-
-Exceptions
-==========
-
-.. automodule:: twod.wsgi.exc
-    :synopsis: Exceptions ever raised by twod.wsgi
-    :members:
-    :show-inheritance:
-
-
+.. autofunction:: django_pastedeploy_settings.factories.add_media_to_app
