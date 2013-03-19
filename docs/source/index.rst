@@ -22,7 +22,8 @@ Contents
 .. toctree::
    :maxdepth: 2
    
-   manual/index
+   paste-factory
+   testing
    api
    about
    changelog

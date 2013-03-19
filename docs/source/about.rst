@@ -1,53 +1,28 @@
-===================
-About **twod.wsgi**
-===================
-
-*twod.wsgi* has only one goal, which is to bring WSGI support to Django
-to the same level as in the other modern Python frameworks. We tried it to
-implement these improvements at the core of Django, but unfortunately `that
-is not going to happen
-<http://groups.google.com/group/django-developers/browse_thread/thread/08c7ffeee7b9343c>`_
-for the time being.
-
-If we succeed and make Django developers realise how critical interoperability
-with and reusability of **existing 3rd party software** are, we may see these
-improvements in Django 1.3. And you can do your bit by `supporting twod.wsgi`_.
-
-This is another project brought to you by `2degrees Limited
-<http://dev.2degreesnetwork.com>`_.
-
+=======================
+Support and Development
+=======================
 
 Getting help
 ============
 
-Keep in mind that **twod.wsgi is a thin integration layer**, so if you have
-questions about the 3rd party software mentioned in the :doc:`manual
-<manual/index>`, it's best to use the support channels for that particular
-project.
+Keep in mind that **django-pastedeploy-settings is a thin integration layer**,
+so if you have questions about the 3rd party software used, it's best to use
+the support channels for that particular project.
 
-For questions about WebOb, WebTest, PasteDeploy, PasteScript and Paste itself,
-use the `paste-users mailing list <http://groups.google.com/group/paste-users>`_.
-Nose has its `nose-users mailing list
-<http://groups.google.com/group/nose-users>`_ and the preferred support channel
-for Buildout is `Python's Distutils-SIG
+For questions about PasteDeploy, PasteScript and Paste itself,
+use the `paste-users mailing list
+<http://groups.google.com/group/paste-users>`_. For questions about Django,
+it's best to post questions to `django-users
+<https://groups.google.com/forum/#!forum/django-users>`_. Nose has its
+`nose-users mailing list <http://groups.google.com/group/nose-users>`_ and the
+preferred support channel for Buildout is `Python's Distutils-SIG
 <http://mail.python.org/mailman/listinfo/distutils-sig>`_. `Python's Web-SIG
 <http://mail.python.org/mailman/listinfo/web-sig>`_ is the right place for
 queries about WSGI in general.
 
-For questions directly related to *twod.wsgi* or if you're not sure what's
-the right place to ask a given question, please use our `2degrees-floss mailing
-list <http://groups.google.com/group/2degrees-floss/>`_.
-
-
-Supporting twod.wsgi
-====================
-
-If you've found this project useful, please help us spread the word about it
-in the Django community!
-
-You may also consider voting for it on
-`Ohloh <https://www.ohloh.net/p/twod-wsgi>`_ and/or `Freshmeat
-<http://freshmeat.net/projects/twodwsgi>`_.
+For questions directly related to *django-pastedeploy-settings* or if you're
+not sure what's the right place to ask a given question, please use our
+`2degrees-floss mailing list <http://groups.google.com/group/2degrees-floss/>`_.
 
 
 Development
@@ -63,7 +38,6 @@ long as:
 - The new code doesn't break existing functionality.
 
 Please go to `our development site on GitHub
-<https://github.com/2degrees/twod.wsgi/>`_ to get the 
-`latest code <https://github.com/2degrees/twod.wsgi/download/>`_,
-fork it (and ask us to merge them into ours) and raise
-`issues <https://github.com/2degrees/twod.wsgi/issues/>`_.
+<https://github.com/2degrees/django-pastedeploy-settings/>`_ to get the 
+latest code, fork it (and ask us to merge them into ours) and raise
+`issues <https://github.com/2degrees/django-pastedeploy-settings/issues/>`_.

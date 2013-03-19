@@ -45,7 +45,7 @@ You could use it like this:
 .. code-block:: ini
 
     [test]
-    recipe = twod.wsgi:nose
+    recipe = django-pastedeploy-settings:nose
     paste_config_uri = ${URI_to_the_config}
     eggs = YOUR_DISTRIBUTION
 
@@ -62,13 +62,15 @@ recipe, so you can use its additional options such as ``extra-paths`` and
 
     **Make sure to install the extra dependencies for this recipe.**
     
-    If you've added ``twod.wsgi`` as a dependency in your :file:`setup.py` file,
-    rename it to ``twod.wsgi[buildout]``. This way, *twod.wsgi* will be
-    installed along with the additional dependencies for this Buildout recipe.
+    If you've added ``django-pastedeploy-settings`` as a dependency in your
+    :file:`setup.py` file, rename it to
+    ``django-pastedeploy-settings[buildout]``. This way,
+    *django-pastedeploy-settings* will be installed along with the additional
+    dependencies for this Buildout recipe.
     
     If you're installing it from :command:`easy_install`, you'd need to run::
     
-        easy_install twod.wsgi[buildout]
+        easy_install django-pastedeploy-settings[buildout]
 
 
 Functional tests with WebTest
@@ -84,7 +86,7 @@ To use it, you'd just need to wrap our Django-powered WSGI application around
 :class:`webtest.TestApp`::
 
     from webob import TestApp
-    from twod.wsgi import DjangoApplication
+    from django.core.handlers.wsgi import WSGIHandler
     
     app = TestApp(DjangoApplication())
     
@@ -94,7 +96,7 @@ To use it, you'd just need to wrap our Django-powered WSGI application around
     
     assert "Welcome to my site" in response
     assert 200 == response.status_int
-    assert "200 Alright then" == response.status
+    assert "200 OK" == response.status
     assert "login" in response.forms
 
 The test application object is stateless, so it's safe to reuse the same object
@@ -104,8 +106,8 @@ Skipping database setup
 =======================
 
 By default, it is going to set up a test database. If you want to run a test
-suite which does not need a database, you can disable it with the :option:`--no-db`
-option:
+suite which does not need a database, you can disable it with the
+:option:`--no-db` option:
 
 .. program:: nosetests
 

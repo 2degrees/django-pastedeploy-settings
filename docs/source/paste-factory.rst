@@ -21,12 +21,12 @@ in this case would be a Django application). These callables are called
 as "WSGI handler" or "handler" for short.
 
 If you don't need to run any initialisation routine, you can have PasteDeploy
-use the generic Application Factory provided by *twod.wsgi*. If you do, you
-can define your own factory. Either way, all these options will be available
-as settings within Django.
+use the generic Application Factory provided by *django-pastedeploy-settings*.
+If you do, you can define your own factory. Either way, all these options will
+be available as settings within Django.
 
 The following is a minimal configuration file which uses the Application Factory
-provided by *twod.wsgi*.
+provided by *django-pastedeploy-settings*.
 
 .. code-block:: ini
 
@@ -35,19 +35,19 @@ provided by *twod.wsgi*.
     django_settings_module = your_application.settings
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
 
 It does not define any option that can be used by Django or your application,
 apart from ``debug``. Note this option is lower case: That's the de-facto
-spelling for this variable in the WSGI world. *twod.wsgi* will automatically
-set Django's ``DEBUG`` to that value.
+spelling for this variable in the WSGI world. *django-pastedeploy-settings* will
+automatically set Django's ``DEBUG`` to that value.
 
 The ``DEFAULT`` section is the only special section in these configuration
 files. There you can define variables to be used across the different modes
 in which your application can be run, as well as some meta variables for Paste,
-*twod.wsgi* or other 3rd party software. Sections with the ``app:`` prefix
-define the settings for WSGI applications; you should generally use this kind of
-sections for your settings.
+*django-pastedeploy-settings* or other 3rd party software. Sections with the
+``app:`` prefix define the settings for WSGI applications; you should general
+use this kind of sections for your settings.
 
 You can have more than one set of settings for your Django application. If,
 for example, you wanted to be able to use your application in development and
@@ -60,7 +60,7 @@ deployment mode, you could use a configuration like this:
     django_settings_module = your_application.settings
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     
     [app:development]
     use = main
@@ -77,7 +77,7 @@ which depend on this value, you can still refer to it like this:
     django_settings_module = your_application.settings
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     TEMPLATE_DEBUG = %(debug)s
     
     [app:development]
@@ -93,7 +93,7 @@ Or, you can override them on a per application basis:
     django_settings_module = your_application.settings
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     TEMPLATE_DEBUG = False
     
     [app:development]
@@ -122,9 +122,9 @@ PasteDeploy passes all the values as strings, so you have to convert them into
 the right Python type by hand; possibly using the :mod:`conversion utilities
 <paste.deploy.converters>` it provides. That's not necessary with the
 `official settings in Django
-<http://docs.djangoproject.com/en/dev/ref/settings/>`_ because *twod.wsgi* will
-convert them automatically, and you can also have your own settings converted
-too.
+<http://docs.djangoproject.com/en/dev/ref/settings/>`_ because
+*django-pastedeploy-settings* will convert them automatically, and you can also
+have your own settings converted too.
 
 You can move all your settings to this INI file or only those which should
 be variable eventually. It's up to you. The author believes it's best to move
@@ -146,7 +146,7 @@ Examples:
 .. code-block:: ini
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     
     # Single line option:
     MY_SHORT_STRING = foo
@@ -179,7 +179,7 @@ automatically too, you can list them all in the ``DEFAULT`` section:
     # ...
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     # ...
     MY_BOOL1 = True
     MY_BOOL2 = False
@@ -192,8 +192,8 @@ Integers
 --------
 
 Django integer settings like ``EMAIL_PORT`` and ``DATABASE_PORT`` will get
-converted automatically if they're set. Use the ``custom_settings.integers`` option to
-have yours converted too:
+converted automatically if they're set. Use the ``custom_settings.integers``
+option to have yours converted too:
 
 .. code-block:: ini
 
@@ -204,7 +204,7 @@ have yours converted too:
     # ...
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     # ...
     
     # Built-in integer:
@@ -221,8 +221,8 @@ Tuples
 ------
 
 Again, built-in tuple settings in Django are converted automatically. To have
-your tuples converted too, use the ``custom_settings.tuples`` option in the ``DEFAULT``
-section:
+your tuples converted too, use the ``custom_settings.tuples`` option in the
+``DEFAULT`` section:
 
 .. code-block:: ini
 
@@ -235,7 +235,7 @@ section:
     # ...
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     # ...
     
     # Single line:
@@ -259,9 +259,9 @@ section:
 Items should be delimited by whitespace.
 
 Note that when you have one of these settings is already defined in your
-Python settings module, *twod.wsgi* will append the items found in the INI file
-to the existing tuple. For example, if you define the following tuple in your
-settings module::
+Python settings module, *django-pastedeploy-settings* will append the items
+found in the INI file to the existing tuple. For example, if you define the
+following tuple in your settings module::
 
     MIDDLEWARE_CLASSES = (
         'django.middleware.common.CommonMiddleware',
@@ -276,7 +276,7 @@ And have the following configuration:
     # ...
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     
     MIDDLEWARE_CLASSES =
         yourpackage.middleware.ExtraMiddleware1
@@ -299,7 +299,8 @@ Nested tuples
 -------------
 
 Django's nested tuple settings (e.g., ``ADMINS``) are converted automatically
-and custom settings can be converted using the ``custom_settings.nested_tuples``:
+and custom settings can be converted using the
+``custom_settings.nested_tuples``:
 
 .. code-block:: ini
 
@@ -310,7 +311,7 @@ and custom settings can be converted using the ``custom_settings.nested_tuples``
     # ...
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     # ...
     ADMINS =
         Gustavo ; foo@example.com
@@ -337,7 +338,7 @@ Dictionaries can be used almost the same way you use `nested tuples`_:
     # ...
     
     [app:main]
-    use egg:twod.wsgi
+    use egg:django-pastedeploy-settings
     # ...
     
     # Built-in dictionary -- will get converted automatically:
@@ -370,7 +371,7 @@ empty, otherwise they will be left as a string.:
     # ...
     
     [app:main]
-    use egg:twod.wsgi
+    use egg:django-pastedeploy-settings
     # ...
     
     # Built-in None value -- will get converted automatically:
@@ -401,11 +402,11 @@ Alternatively these two settings can be defined and will be left as strings:
     # ...
     
     [app:main]
-    use egg:twod.wsgi
+    use egg:django-pastedeploy-settings
     # ...
     
     # Built-in None value -- will get converted automatically:
-    FILE_UPLOAD_TEMP_DIR = /tmp/twod/
+    FILE_UPLOAD_TEMP_DIR = /tmp/your-app/
         
     
     # Custom value to be None:
@@ -415,11 +416,11 @@ Alternatively these two settings can be defined and will be left as strings:
 
 In this case, the following settings will be available::
 
-	>>> from django.conf import settings
-	>>> print settings.FILE_UPLOAD_TEMP_DIR
-	/tmp/twod/
-	>>> print settings.YOUR_POTENTIALLY_NONE_SETTING
-	Something else
+    >>> from django.conf import settings
+    >>> print settings.FILE_UPLOAD_TEMP_DIR
+    /tmp/your-app/
+    >>> print settings.YOUR_POTENTIALLY_NONE_SETTING
+    Something else
 
 
 Unsupported settings
@@ -451,7 +452,7 @@ this:
     # ...
     
     [app:main]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     MEDIA_ROOT = %(here)s/media
     
     # ...
@@ -668,7 +669,7 @@ You could have the following base configuration file:
     debug = False
     
     [app:base]
-    use = egg:twod.wsgi
+    use = egg:django-pastedeploy-settings
     EMAIL_PORT = 25
     
     [app:debug]
@@ -701,7 +702,7 @@ If you need to perform a one-off routine when your application is started up
 (i.e., before any request), you can write your own PasteDeploy application
 factory::
 
-    from twod.wsgi import wsgify_django
+    from django_pastedeploy_settings import wsgify_django
     
     
     def make_application(global_config, **local_conf):

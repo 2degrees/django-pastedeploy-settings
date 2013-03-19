@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# twod.wsgi documentation build configuration file, created by
+# django-pastedeploy-settings documentation build configuration file, created by
 # sphinx-quickstart on Thu Jan 21 14:07:59 2010.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -11,7 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
 
 here = os.path.dirname(os.path.abspath(__file__))
 root = os.path.dirname(os.path.dirname(here))
@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'twod.wsgi'
-copyright = u'2010, 2degrees Limited'
+project = u'django-pastedeploy-settings'
+copyright = u'2010, 2013, 2degrees Limited'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -133,12 +133,6 @@ html_static_path = ['_static']
 # typographically correct entities.
 #html_use_smartypants = True
 
-# Custom sidebar templates, maps document names to template names.
-ohlog_sidebar = "ohloh-sidebar.html"
-sidebars = [ohlog_sidebar]
-html_sidebars = {'index': sidebars, 'manual/index': sidebars, 'api': sidebars,
-                 'about': sidebars, 'changelog': sidebars}
-
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
 #html_additional_pages = {}
@@ -164,7 +158,7 @@ html_sidebars = {'index': sidebars, 'manual/index': sidebars, 'api': sidebars,
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'twodwsgidoc'
+htmlhelp_basename = 'djangopastedeploysettingsdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -178,7 +172,8 @@ htmlhelp_basename = 'twodwsgidoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'twodwsgi.tex', u'twod.wsgi Documentation',
+  ('index', 'djangopastedeploysettings.tex',
+   u'django-pastedeploy-settings Documentation',
    u'2degrees Network', 'manual'),
 ]
 
