@@ -28,7 +28,7 @@ setup(name="django-pastedeploy-settings",
       description="Enhanced WSGI support for Django applications",
       long_description=README,
       classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Framework :: Django",
         "Framework :: Paste",
@@ -39,9 +39,8 @@ setup(name="django-pastedeploy-settings",
         "Programming Language :: Python :: 2",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI",
-        "Topic :: Security",
         ],
-      keywords="django wsgi paste web",
+      keywords="django wsgi paste pastedeploy web webtest nose nosetests",
       author="2degrees Limited",
       author_email="2degrees-floss@googlegroups.com",
       url="http://pythonhosted.org/django-pastedeploy-settings/",
@@ -61,7 +60,7 @@ setup(name="django-pastedeploy-settings",
         'buildout': ["zc.recipe.egg >= 1.2.2"],
         },
       test_suite="nose.collector",
-      entry_points = """\
+      entry_points="""\
         [paste.app_factory]
         main = django_pastedeploy_settings:wsgify_django
         
