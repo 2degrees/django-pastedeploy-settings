@@ -50,7 +50,7 @@ setup(name="django-pastedeploy-settings",
       zip_safe=False,
       tests_require=["coverage"],
       install_requires=[
-        "Django >= 1.1",
+        "Django >= 1.4",
         "PasteDeploy >= 1.3.3, <= 1.5.0",
         "Paste >= 1.7.2, <= 1.7.5.1",
         "setuptools",
