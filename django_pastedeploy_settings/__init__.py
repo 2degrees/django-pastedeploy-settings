@@ -31,6 +31,7 @@ __all__ = [
     'MissingDjangoSettingsModuleError',
     'SettingException',
     'UnsupportedDjangoSettingError',
+    'get_option_values_parsed',
     'wsgify_django',
     ]
 
@@ -154,7 +155,7 @@ def _get_local_options(global_conf, local_conf):
                     "it in your Python settings module." % option_name,
                 )
 
-    options = _get_configuration_options_parsed(local_conf)
+    options = get_option_values_parsed(local_conf)
     
     # We should not import a module with "__file__" as a global variable:
     options['paste_configuration_file'] = global_conf.get("__file__")
@@ -162,7 +163,7 @@ def _get_local_options(global_conf, local_conf):
     return options
 
 
-def _get_configuration_options_parsed(raw_options):
+def get_option_values_parsed(raw_options):
     options = {}
     for (option_name, option_value) in raw_options.items():
         try:

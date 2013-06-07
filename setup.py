@@ -48,16 +48,16 @@ setup(name="django-pastedeploy-settings",
       packages=find_packages(exclude=["tests"]),
       py_modules=["django_testing", "django_testing_recipe"],
       zip_safe=False,
-      tests_require=["coverage"],
+      tests_require=["nose", "coverage"],
       install_requires=[
         "Django >= 1.4",
         "PasteDeploy >= 1.3.3, <= 1.5.0",
         "Paste >= 1.7.2, <= 1.7.5.1",
         "setuptools",
-        "nose",
         ],
       extras_require={
-        'buildout': ["zc.recipe.egg >= 1.2.2"],
+        'nose-buildout': ["nose", "zc.recipe.egg >= 1.2.2"],
+        'buildout-options': ["deployrecipes >= 1.0rc2"],
         },
       test_suite="nose.collector",
       entry_points="""\
@@ -71,6 +71,7 @@ setup(name="django-pastedeploy-settings",
         django-wsgified = django_testing:DjangoWsgifiedPlugin
         
         [zc.buildout]
-        nose = django_testing_recipe:DjangoWsgifiedRecipe [buildout]
+        nose = django_testing_recipe:DjangoWsgifiedRecipe [nose-buildout]
+        buildout-options = django_pastedeploy_settings.buildout_options:DecodedConfvarsRecipe [buildout-options]
       """
       )
