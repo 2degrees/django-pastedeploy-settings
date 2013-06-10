@@ -23,11 +23,12 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, "README.rst")).read()
 version = open(os.path.join(here, "VERSION.txt")).readline().rstrip()
 
-setup(name="django-pastedeploy-settings",
-      version=version,
-      description="Conversion of Paste Deployment configuration to Django settings",
-      long_description=README,
-      classifiers=[
+setup(
+    name="django-pastedeploy-settings",
+    version=version,
+    description="Conversion of Paste Deployment configuration to Django settings",
+    long_description=README,
+    classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Web Environment",
         "Framework :: Django",
@@ -40,27 +41,27 @@ setup(name="django-pastedeploy-settings",
         "Topic :: Internet :: WWW/HTTP",
         "Topic :: Internet :: WWW/HTTP :: WSGI",
         ],
-      keywords="django wsgi paste pastedeploy web webtest nose nosetests",
-      author="2degrees Limited",
-      author_email="2degrees-floss@googlegroups.com",
-      url="http://pythonhosted.org/django-pastedeploy-settings/",
-      license="BSD (http://dev.2degreesnetwork.com/p/2degrees-license.html)",
-      packages=find_packages(exclude=["tests"]),
-      py_modules=["django_testing", "django_testing_recipe"],
-      zip_safe=False,
-      tests_require=["nose", "coverage"],
-      install_requires=[
+    keywords="django wsgi paste pastedeploy web webtest nose nosetests",
+    author="2degrees Limited",
+    author_email="2degrees-floss@googlegroups.com",
+    url="http://pythonhosted.org/django-pastedeploy-settings/",
+    license="BSD (http://dev.2degreesnetwork.com/p/2degrees-license.html)",
+    packages=find_packages(exclude=["tests"]),
+    py_modules=["django_testing", "django_testing_recipe"],
+    zip_safe=False,
+    tests_require=["nose", "coverage"],
+    install_requires=[
         "Django >= 1.4",
         "PasteDeploy >= 1.3.3, <= 1.5.0",
         "Paste >= 1.7.2, <= 1.7.5.1",
         "setuptools",
         ],
-      extras_require={
+    extras_require={
         'nose-buildout': ["nose", "zc.recipe.egg >= 1.2.2"],
-        'buildout-options': ["deployrecipes >= 1.0rc2"],
+        'buildout-options': ["deployrecipes >= 1.0rc2dev"],
         },
-      test_suite="nose.collector",
-      entry_points="""\
+    test_suite="nose.collector",
+    entry_points="""\
         [paste.app_factory]
         main = django_pastedeploy_settings:wsgify_django
         
@@ -72,6 +73,6 @@ setup(name="django-pastedeploy-settings",
         
         [zc.buildout]
         nose = django_testing_recipe:DjangoWsgifiedRecipe [nose-buildout]
-        buildout-options = django_pastedeploy_settings.buildout_options:DecodedConfvarsRecipe [buildout-options]
-      """
-      )
+        django-settings = django_pastedeploy_settings.buildout_options:DecodedConfvarsRecipe [buildout-options]
+        """,
+    )
