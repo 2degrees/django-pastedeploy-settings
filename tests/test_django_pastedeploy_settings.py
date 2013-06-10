@@ -14,10 +14,6 @@
 # INFRINGEMENT, AND FITNESS FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""
-Test the set up of the Django applications as WSGI applications.
-
-"""
 from json import dumps as convert_to_json
 import os
 
@@ -43,7 +39,6 @@ _FIXTURES = os.path.join(_HERE, "mock_django_settings")
 
 
 class TestDjangoWsgifytor(BaseDjangoTestCase):
-    """Tests for :func:`wsgify_django`."""
     
     setup_fixture = False
     
@@ -81,7 +76,6 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
 
 
 class TestSettingUpSettings(BaseDjangoTestCase):
-    """Tests for the internal :func:`_set_up_settings`."""
     
     setup_fixture = False
     
@@ -184,7 +178,6 @@ class TestSettingUpSettings(BaseDjangoTestCase):
 
 
 class TestSettingsConvertion(object):
-    """Unit tests for :func:`_get_local_options`."""
     
     def test_valid_json_values(self):
         global_conf = _get_global_conf('empty_module10')
