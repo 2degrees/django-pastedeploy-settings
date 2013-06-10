@@ -24,12 +24,19 @@ __all__ = ['DecodedConfvarsRecipe']
 class DecodedConfvarsRecipe(ConfvarsRecipe):
     """
     Recipe to make PasteDeploy-based Django settings available to Buildout.
-
+    
+    Each setting value must be converted from JSON to ASCII strings.
+    
     """
     
     def get_config_variables(self, *args, **kwargs):
-        config_variables_raw = super(DecodedConfvarsRecipe, self) \
+        variables_with_json_values = super(DecodedConfvarsRecipe, self) \
             .get_config_variables(*args, **kwargs)
         
-        config_variables = get_option_values_parsed(config_variables_raw)
-        return config_variables
+        variables = get_option_values_parsed(variables_with_json_values)
+        
+        variables_with_str_values = {}
+        for variable_name, variable_value in variables.items():
+            variables_with_str_values[variable_name] = str(variable_value)
+        
+        return variables_with_str_values
