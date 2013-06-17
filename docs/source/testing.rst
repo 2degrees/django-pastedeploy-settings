@@ -37,8 +37,8 @@ Buildout recipe
 ===============
 
 Hard-coding the URI in a file is an option when it's a fixed and relative path.
-If that's not the case and you use `Buildout <http://www.buildout.org/>`_
-[#use-buildout]_, our recipe for the Nose plugin will solve this issue.
+If that's not the case and you use `Buildout <http://www.buildout.org/>`_,
+our recipe for the Nose plugin will solve this issue.
 
 You could use it like this:
 
@@ -63,14 +63,14 @@ recipe, so you can use its additional options such as ``extra-paths`` and
     **Make sure to install the extra dependencies for this recipe.**
     
     If you've added ``django-pastedeploy-settings`` as a dependency in your
-    :file:`setup.py` file, rename it to
-    ``django-pastedeploy-settings[buildout]``. This way,
+    :file:`setup.py` file, change that to
+    ``django-pastedeploy-settings[nose-buildout]``. This way,
     *django-pastedeploy-settings* will be installed along with the additional
     dependencies for this Buildout recipe.
     
     If you're installing it from :command:`easy_install`, you'd need to run::
     
-        easy_install django-pastedeploy-settings[buildout]
+        easy_install django-pastedeploy-settings[nose-buildout]
 
 
 Functional tests with WebTest
@@ -117,8 +117,3 @@ suite which does not need a database, you can disable it with the
 For example::
 
     nosetests --no-db your_packages.tests.test_suite_without_db
-
-
-.. rubric:: Footnotes
-
-.. [#use-buildout] You should be using Buildout anyway!

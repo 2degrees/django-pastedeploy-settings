@@ -1,6 +1,6 @@
-========================================================
-API documentation for :mod:`django_pastedeploy_settings`
-========================================================
+=================
+API documentation
+=================
 
 .. automodule:: django_pastedeploy_settings
     :synopsis: Conversion of Paste Deployment configuration to Django settings

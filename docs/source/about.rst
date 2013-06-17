@@ -9,8 +9,7 @@ Keep in mind that **django-pastedeploy-settings is a thin integration layer**,
 so if you have questions about the 3rd party software used, it's best to use
 the support channels for that particular project.
 
-For questions about PasteDeploy, PasteScript and Paste itself,
-use the `paste-users mailing list
+For questions about PasteDeploy,  please use the `paste-users mailing list
 <http://groups.google.com/group/paste-users>`_. For questions about Django,
 it's best to post questions to `django-users
 <https://groups.google.com/forum/#!forum/django-users>`_. Nose has its
