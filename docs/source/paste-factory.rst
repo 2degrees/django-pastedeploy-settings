@@ -383,7 +383,7 @@ values, you should do it via :data:`django.conf.settings` after calling
 :func:`~django_pastedeploy_settings.wsgify_django`. If you need to use any of
 those values before calling :func:`~django_pastedeploy_settings.wsgify_django`,
 you'd have to decode them yourself (keeping in mind that not all values
-are encoded in JSON).
+are encoded in JSON because not all are Django settings).
 
 PasteDeploy offers two options to use application factories in a configuration
 file:

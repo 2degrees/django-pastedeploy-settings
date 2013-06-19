@@ -9,7 +9,7 @@ to define the setting values, while *twod.wsgi* v1 required the datatypes to
 be specified separately.
 
 In addition to setting **django-pastedeploy-settings** as a dependency of your
-Python distribution, you need to do the following all of your INI files:
+Python distribution, you need to do the following in all of your INI files:
 
 - Make the ``use`` options refer to ``egg:django-pastedeploy-settings``
   instead of ``egg:twod.wsgi``.
