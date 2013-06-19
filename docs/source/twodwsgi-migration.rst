@@ -18,3 +18,8 @@ Python distribution, you need to do the following in all of your INI files:
   ``twod.booleans``, ``twod.integers``, ``twod.tuples``,
   ``twod.nested_tuples``, ``twod.dictionaries`` and
   ``twod.none_if_empty_settings``).
+
+Finally, if you were using the Builtout recipe that :doc:`integrates
+django-pastedeploy-settings and Nose`, you'll also have to update the Buildout
+part that uses it to replace the recipe ``twod.wsgi:nose`` to
+``django-pastedeploy-settings:nose``.
