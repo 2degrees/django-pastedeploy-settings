@@ -57,7 +57,7 @@ setup(
         "setuptools",
         ],
     extras_require={
-        'nose-buildout': ["nose", "zc.recipe.egg >= 1.2.2"],
+        'nose-buildout': ["zc.recipe.egg >= 1.2.2"],
         'buildout-options': ["deployrecipes >= 1.0rc2"],
         },
     test_suite="nose.collector",
