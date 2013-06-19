@@ -2,7 +2,7 @@
 Releases
 ========
 
-Version 1.0 Beta 1 (UNRELEASED)
+Version 1.0 Beta 1 (2013-06-19)
 ===============================
 
 This is the first public release.
