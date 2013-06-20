@@ -118,7 +118,7 @@ Requirements
 ------------
 
 - Python 2.5 or later. Python v3 isn't officially supported, but might work.
-- Django 1.1 or later.
+- Django 1.4 or later.
 
 
 Contents
