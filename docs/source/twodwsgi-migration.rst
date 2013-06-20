@@ -19,6 +19,10 @@ Python distribution, you need to do the following in all of your INI files:
   ``twod.nested_tuples``, ``twod.dictionaries`` and
   ``twod.none_if_empty_settings``).
 
+If you have your own PasteDeploy application factory, you need to replace the
+call to the function ``twod.wsgi.wsgify_django`` with
+:func:`django_pastedeploy_settings.get_configured_django_wsgi_app`.
+
 Finally, if you were using the Builtout recipe that :doc:`integrates
 django-pastedeploy-settings and Nose <testing>`, you'll also have to update the
 Buildout part that uses it to replace the recipe ``twod.wsgi:nose`` to

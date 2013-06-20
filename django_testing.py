@@ -25,10 +25,10 @@ from nose.plugins import Plugin
 from paste.deploy import loadapp
 
 
-__all__ = ("DjangoWsgifiedPlugin",)
+__all__ = ("DjangoPastedeployPlugin",)
 
 
-class DjangoWsgifiedPlugin(Plugin):
+class DjangoPastedeployPlugin(Plugin):
     """
     Loads the Django application described by the PasteDeploy configuration URL
     in a WSGI environment suitable for testing.
@@ -36,7 +36,7 @@ class DjangoWsgifiedPlugin(Plugin):
     """
     enabled = False
     
-    name = "django-wsgified"
+    name = "paste-deploy-config"
     
     enableOpt = "paste_config_uri"
     
@@ -47,7 +47,7 @@ class DjangoWsgifiedPlugin(Plugin):
         )
         
         parser.add_option(
-            "--with-%s" % self.name,
+            "--%s" % self.name,
             type="string",
             default="",
             dest=self.enableOpt,
@@ -66,7 +66,7 @@ class DjangoWsgifiedPlugin(Plugin):
     
     def configure(self, options, conf):
         """Store the URI to the PasteDeploy configuration."""
-        super(DjangoWsgifiedPlugin, self).configure(options, conf)
+        super(DjangoPastedeployPlugin, self).configure(options, conf)
         
         self.paste_config_uri = getattr(options, self.enableOpt)
         self.enabled = bool(self.paste_config_uri)

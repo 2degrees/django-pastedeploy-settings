@@ -16,14 +16,14 @@
 ##############################################################################
 """
 Buildout recipe to use the Nose plugin
-:class:`django_testing.DjangoWsgifiedPlugin`.
+:class:`django_testing.DjangoPastedeployPlugin`.
 
 """
 from zc.buildout import UserError
 from zc.recipe.egg import Scripts
 
 
-class DjangoWsgifiedRecipe(Scripts):
+class DjangoPastedeployRecipe(Scripts):
     
     def __init__(self, buildout, name, options):
         config_uri = options.pop("paste_config_uri", None)
@@ -34,10 +34,10 @@ class DjangoWsgifiedRecipe(Scripts):
         options['initialization'] = _INITIALIZATION % config_uri
         options['arguments'] = "argv=args"
         options['scripts'] = "nosetests"
-        super(DjangoWsgifiedRecipe, self).__init__(buildout, name, options)
+        super(DjangoPastedeployRecipe, self).__init__(buildout, name, options)
 
 
 _INITIALIZATION = """
 from sys import argv
-args = [argv[0], "--with-django-wsgified=%s"] + argv[1:]
+args = [argv[0], "--paste-deploy-config=%s"] + argv[1:]
 """

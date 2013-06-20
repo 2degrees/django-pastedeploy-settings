@@ -10,13 +10,13 @@ You just have to use the following option:
 
 .. program:: nosetests
 
-.. cmdoption:: --with-django-wsgified=<URI-to-PasteDeploy-config>
+.. cmdoption:: --paste-deploy-config=<URI-to-PasteDeploy-config>
 
 For example:
 
 .. code-block:: bash
 
-    nosetests --with-django-wsgified=config:/path/to/configuration.ini
+    nosetests --paste-deploy-config=config:/path/to/configuration.ini
 
 The big advantage of this is that you'll be able to run the test suite with
 different settings (e.g., to change the database backend).
@@ -28,7 +28,7 @@ to your :file:`setup.cfg` file (should be in the same directory as
 .. code-block:: ini
 
     [nosetests]
-    with-django-wsgified = config:/path/to/configuration.ini
+    paste-deploy-config = config:/path/to/configuration.ini
 
 And then you'll just need to run :command:`nosetests`.
 
@@ -50,7 +50,7 @@ You could use it like this:
     eggs = YOUR_DISTRIBUTION
 
 Then it will create a :command:`nosetests` script where the
-:option:`--with-django-wsgified` will be set to the value in the Buldout
+:option:`--paste-deploy-config` will be set to the value in the Buldout
 variable ``${URI_to_the_config}`` by default. You'll be able to override this
 URI when you run :command:`nosetests`, if you ever need to.
 

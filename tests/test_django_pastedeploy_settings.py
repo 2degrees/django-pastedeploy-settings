@@ -26,10 +26,10 @@ from nose.tools import ok_
 
 from django_pastedeploy_settings import BadDebugFlagError
 from django_pastedeploy_settings import InvalidSettingValueError
+from django_pastedeploy_settings import get_configured_django_wsgi_app
 from django_pastedeploy_settings import MissingDjangoSettingsModuleError
 from django_pastedeploy_settings import UnsupportedDjangoSettingError
 from django_pastedeploy_settings import _DJANGO_UNSUPPORTED_SETTINGS
-from django_pastedeploy_settings import wsgify_django
 
 from tests.utils import BaseDjangoTestCase
 from tests.utils import MockApp
@@ -48,27 +48,27 @@ class TestDjangoWsgifytor(BaseDjangoTestCase):
         
         """
         global_conf = _get_global_conf('settings3', debug=False)
-        wsgify_django(global_conf, debug="true")
+        get_configured_django_wsgi_app(global_conf, debug="true")
         
         from django.conf import settings
         assert_false(settings.DEBUG)
     
     def test_local_conf(self):
         global_conf = _get_global_conf('settings4', debug=False)
-        wsgify_django(global_conf, FOO="10")
+        get_configured_django_wsgi_app(global_conf, FOO="10")
         
         from django.conf import settings
         eq_(settings.FOO, 10)
     
     def test_default_application(self):
         global_conf = _get_global_conf('settings5', debug=False)
-        app = wsgify_django(global_conf)
+        app = get_configured_django_wsgi_app(global_conf)
         
         eq_(app.__class__, WSGIHandler)
     
     def test_custom_application(self):
         global_conf = _get_global_conf('settings6', debug=False)
-        app = wsgify_django(
+        app = get_configured_django_wsgi_app(
             global_conf,
             WSGI_APPLICATION='"tests.utils.MOCK_WSGI_APP"',
             )
@@ -82,7 +82,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
     def test_django_settings_module_set_in_environ(self):
         global_conf = _get_global_conf('empty_module')
         local_conf = _get_local_conf()
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
         eq_(
             os.environ['DJANGO_SETTINGS_MODULE'],
             'tests.mock_django_settings.empty_module',
@@ -95,7 +95,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = _get_global_conf('empty_module2')
         local_conf = _get_local_conf(setting1=None, setting2='String')
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
 
         from tests.mock_django_settings import empty_module2
         
@@ -111,7 +111,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = _get_global_conf('one_member_module')
         local_conf = _get_local_conf(MEMBER='FOO')
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
         
         from tests.mock_django_settings import one_member_module
         
@@ -130,7 +130,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         """
         global_conf = _get_global_conf('iterables_module')
         local_conf = _get_local_conf(LIST=[8, 9], TUPLE=(6, 7))
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
         
         from tests.mock_django_settings import iterables_module
         
@@ -148,7 +148,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
             }
         assert_raises(
             MissingDjangoSettingsModuleError,
-            wsgify_django,
+            get_configured_django_wsgi_app,
             global_conf,
             )
     
@@ -161,7 +161,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
         assert_raises_regexp(
             BadDebugFlagError,
             r'Settings modules must not define "DEBUG"',
-            wsgify_django,
+            get_configured_django_wsgi_app,
             global_conf,
             )
     
@@ -174,7 +174,7 @@ class TestSettingUpSettings(BaseDjangoTestCase):
             'debug': "true",
             'django_settings_module': "non_existing_module",
             }
-        assert_raises(ImportError, wsgify_django, global_conf)
+        assert_raises(ImportError, get_configured_django_wsgi_app, global_conf)
 
 
 class TestSettingsConvertion(object):
@@ -186,7 +186,7 @@ class TestSettingsConvertion(object):
             parameter2={'key': [1, 2]},
             )
         
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
         
         from tests.mock_django_settings import empty_module10
         
@@ -203,7 +203,7 @@ class TestSettingsConvertion(object):
         assert_raises_regexp(
             InvalidSettingValueError,
             r"parameter",
-            wsgify_django,
+            get_configured_django_wsgi_app,
             global_conf,
             **local_conf
             )
@@ -216,7 +216,7 @@ class TestSettingsConvertion(object):
             assert_raises_regexp(
                 UnsupportedDjangoSettingError,
                 setting_name,
-                wsgify_django,
+                get_configured_django_wsgi_app,
                 global_conf,
                 **local_conf
                 )
@@ -226,7 +226,7 @@ class TestSettingsConvertion(object):
         global_conf = _get_global_conf('empty_module3', __file__='config.ini')
         local_conf = _get_local_conf()
         
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
         
         from tests.mock_django_settings import empty_module3
         
@@ -243,7 +243,7 @@ class TestSettingsConvertion(object):
         assert_raises_regexp(
             BadDebugFlagError,
             exception_message_regexp,
-            wsgify_django,
+            get_configured_django_wsgi_app,
             bad_global_conf,
             **good_local_conf
             )
@@ -253,7 +253,7 @@ class TestSettingsConvertion(object):
         assert_raises_regexp(
             BadDebugFlagError,
             exception_message_regexp,
-            wsgify_django,
+            get_configured_django_wsgi_app,
             good_global_conf,
             **bad_local_conf
             )
@@ -262,7 +262,7 @@ class TestSettingsConvertion(object):
         """Django's "DEBUG" must be set to Paster's "debug"."""
         global_conf = _get_global_conf('empty_module8')
         local_conf = _get_local_conf()
-        wsgify_django(global_conf, **local_conf)
+        get_configured_django_wsgi_app(global_conf, **local_conf)
         
         from tests.mock_django_settings import empty_module8
         
@@ -276,7 +276,7 @@ class TestSettingsConvertion(object):
         assert_raises_regexp(
             BadDebugFlagError,
             'Paste\'s "debug" option must be set in the configuration file',
-            wsgify_django,
+            get_configured_django_wsgi_app,
             global_conf,
             )
 

@@ -362,14 +362,14 @@ If you need to perform a one-off routine when your application is started up
 (i.e., before any request) or wrap your Django application with WSGI middleware,
 you can write your own PasteDeploy application factory::
 
-    from django_pastedeploy_settings import wsgify_django
+    from django_pastedeploy_settings import get_configured_django_wsgi_app
     
     
     def make_application(global_config, **local_conf):
         
         # Do something before importing Django and your settings have been applied.
         
-        app = wsgify_django(global_config, **local_conf)
+        app = get_configured_django_wsgi_app(global_config, **local_conf)
         
         # Do something right after your application has been set up (e.g., add WSGI middleware).
         
@@ -380,8 +380,8 @@ you can write your own PasteDeploy application factory::
 ``app:*`` section. The values in both dictionaries are the raw strings defined
 in your INI file, not the decoded JSON values, so if you want to use such
 values, you should do it via :data:`django.conf.settings` after calling
-:func:`~django_pastedeploy_settings.wsgify_django`. If you need to use any of
-those values before calling :func:`~django_pastedeploy_settings.wsgify_django`,
+:func:`~django_pastedeploy_settings.get_configured_django_wsgi_app`. If you need to use any of
+those values before calling :func:`~django_pastedeploy_settings.get_configured_django_wsgi_app`,
 you'd have to decode them yourself (keeping in mind that not all values
 are encoded in JSON because not all are Django settings).
 

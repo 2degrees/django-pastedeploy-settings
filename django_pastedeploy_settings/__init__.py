@@ -31,15 +31,15 @@ __all__ = [
     'MissingDjangoSettingsModuleError',
     'SettingException',
     'UnsupportedDjangoSettingError',
+    'get_configured_django_wsgi_app',
     'get_option_values_parsed',
-    'wsgify_django',
     ]
 
 
 _LOGGER = getLogger(__name__)
 
 
-def wsgify_django(global_conf, **local_conf):
+def get_configured_django_wsgi_app(global_conf, **local_conf):
     """
     Load the Django application for use in a WSGI server.
     
