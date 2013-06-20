@@ -2,6 +2,13 @@
 Releases
 ========
 
+Version 1.0 Beta 2 (2013-06-20)
+===============================
+
+- Made the :doc:`Nose plugin <testing>` work with multiple databases as
+  supported by Django >= 1.3.
+
+
 Version 1.0 Beta 1 (2013-06-19)
 ===============================
 

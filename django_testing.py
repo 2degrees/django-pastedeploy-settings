@@ -74,26 +74,33 @@ class DjangoWsgifiedPlugin(Plugin):
         self.create_db = not options.no_db
     
     def begin(self):
+        # Set up the settings before using Django
         loadapp(self.paste_config_uri)
-        # It's safe to import from Django at this point. The infamous
-        # DJANGO_SETTINGS_MODULE is now set.
         
-        # Setting up Django:
-        from django.test.utils import setup_test_environment
-        setup_test_environment()
-        
-        # Setting up the database:
-        if self.create_db:
-            from django.conf import settings
-            from django.db import connection
-            
-            self.db_name = settings.DATABASE_NAME
-            connection.creation.create_test_db(self.verbosity, autoclobber=True)
+        self._set_up_test_environment()
+        self._create_test_databases()
     
     def finalize(self, result=None):
+        self._remove_test_databases()
+        self._tear_down_test_environment()
+    
+    def _set_up_test_environment(self):
+        from django.test.utils import setup_test_environment
+        setup_test_environment()
+    
+    def _tear_down_test_environment(self):
         from django.test.utils import teardown_test_environment
         teardown_test_environment()
-        # Tearing down the database:
+    
+    def _create_test_databases(self):
         if self.create_db:
-            from django.db import connection
-            connection.creation.destroy_test_db(self.db_name, self.verbosity)
+            from django.conf import settings
+            from django.test.utils import get_runner
+            TestRunner = get_runner(settings)
+            self.test_runner = TestRunner(self.verbosity, interactive=False)
+            self.db_config = self.test_runner.setup_databases()
+    
+    def _remove_test_databases(self):
+        if self.create_db:
+            self.test_runner.teardown_databases(self.db_config)
+
