@@ -2,8 +2,8 @@
 Releases
 ========
 
-Version 1.0 Beta 2 (2013-06-20)
-===============================
+Version 1.0 Release Candidate 1 (2013-06-20)
+============================================
 
 - Renamed function ``wsgify_django`` to
   :func:`django_pastedeploy_settings.get_configured_django_wsgi_app`.
