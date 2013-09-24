@@ -15,7 +15,7 @@
 ##############################################################################
 from deployrecipes import ConfvarsRecipe
 
-from django_pastedeploy_settings import _get_option_values_parsed
+from django_pastedeploy_settings import resolve_local_conf_options
 
 
 __all__ = ['DecodedConfvarsRecipe']
@@ -29,11 +29,12 @@ class DecodedConfvarsRecipe(ConfvarsRecipe):
 
     """
 
-    def get_config_variables(self, *args, **kwargs):
-        variables_with_json_values = super(DecodedConfvarsRecipe, self) \
-            .get_config_variables(*args, **kwargs)
-
-        variables = _get_option_values_parsed(variables_with_json_values)
+    @staticmethod
+    def get_config_variables_from_app_config(app_config):
+        variables = resolve_local_conf_options(
+            app_config.global_conf,
+            app_config.local_conf,
+            )
 
         variables_with_str_values = {}
         for variable_name, variable_value in variables.items():
