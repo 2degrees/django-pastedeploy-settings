@@ -21,6 +21,7 @@ Utilities to set up Django applications, both in Web and CLI environments.
 from json import loads as parse_json
 from logging import getLogger
 import os
+import re
 
 from paste.deploy.loadwsgi import appconfig
 
@@ -39,10 +40,30 @@ __all__ = [
 _LOGGER = getLogger(__name__)
 
 
+_OPTION_REFERENCE_REGEX = re.compile(r"""
+    (?P<escape_character>\$)?
+    \$
+    \{
+    (?P<referenced_option_name>.+?)
+    \}
+    """,
+    re.VERBOSE,
+    )
+
+
 def resolve_local_conf_options(global_conf, local_conf):
     _validate_debug_data(global_conf, local_conf)
+    _require_supported_options_only(local_conf)
 
-    local_conf_resolved = _get_local_options(global_conf, local_conf)
+    local_conf = dict(local_conf, DEBUG=global_conf['debug'])
+    local_conf_resolved = \
+        _get_option_values_dereferenced(global_conf, local_conf)
+    local_conf_resolved = _get_option_values_parsed(local_conf_resolved)
+
+    # Make the PasteDeploy configuration file path available
+    local_conf_resolved['paste_configuration_file'] = \
+        global_conf.get('__file__')
+
     return local_conf_resolved
 
 
@@ -163,14 +184,7 @@ def _validate_debug_data(global_conf, local_conf):
             )
 
 
-def _get_local_options(global_conf, local_conf):
-    """
-    Build the final options based on PasteDeploy's ``global_conf`` and
-    ``local_conf``.
-
-    """
-    local_conf['DEBUG'] = global_conf['debug']
-
+def _require_supported_options_only(local_conf):
     for option_name in local_conf:
         if option_name in _DJANGO_UNSUPPORTED_SETTINGS:
             raise UnsupportedDjangoSettingError(
@@ -178,12 +192,41 @@ def _get_local_options(global_conf, local_conf):
                     "it in your Python settings module." % option_name,
                 )
 
-    options = _get_option_values_parsed(local_conf)
 
-    # We should not import a module with "__file__" as a global variable:
-    options['paste_configuration_file'] = global_conf.get("__file__")
+def _get_option_values_dereferenced(global_conf, local_conf):
+    options = {}
+    for local_option_name, local_option_value in local_conf.items():
+        try:
+            local_option_value_dereferrenced = _OPTION_REFERENCE_REGEX.sub(
+                lambda match: _resolve_option_reference(match, global_conf),
+                local_option_value,
+                )
+        except _NonExistingReferencedOptionError, exc:
+            raise InvalidSettingValueError(
+                'Option "%s" references non-existing global option "%s"' % (
+                    local_option_name,
+                    exc,
+                    ),
+                )
+
+        options[local_option_name] = local_option_value_dereferrenced
 
     return options
+
+
+def _resolve_option_reference(reference_match, options):
+    is_escaping = bool(reference_match.group('escape_character'))
+    if is_escaping:
+        replacement = reference_match.group(0)[1:]
+    else:
+        referenced_option_name = reference_match.group('referenced_option_name')
+        try:
+            referenced_option_value = options[referenced_option_name]
+        except KeyError:
+            raise _NonExistingReferencedOptionError(referenced_option_name)
+        replacement = referenced_option_value
+
+    return replacement
 
 
 def _get_option_values_parsed(raw_options):
@@ -222,6 +265,10 @@ class UnsupportedDjangoSettingError(SettingException):
 
 
 class InvalidSettingValueError(SettingException):
+    pass
+
+
+class _NonExistingReferencedOptionError(InvalidSettingValueError):
     pass
 
 

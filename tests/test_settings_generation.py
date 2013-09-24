@@ -143,6 +143,90 @@ class TestJSONParsing(object):
             )
 
 
+class TestCustomStringSubstitution(object):
+
+    def test_no_substitution(self):
+        global_conf = get_global_conf('read_only_empty_module')
+
+        option_name = 'SETTING1'
+        option_value = 'value'
+        local_conf = get_local_conf(**{option_name: option_value})
+
+        local_conf_resolved = \
+            resolve_local_conf_options(global_conf, local_conf)
+
+        eq_(option_value, local_conf_resolved[option_name])
+
+    def test_substituting_existing_global_option(self):
+        global_option_name = 'global_option_name'
+        global_option_value = 'global_option_value'
+        global_conf = get_global_conf(
+            'read_only_empty_module',
+            **{global_option_name: global_option_value}
+            )
+
+        local_conf = get_local_conf()
+        local_option_name = 'SETTING1'
+        local_option_value = '"The value is ${%s}"' % global_option_name
+        local_conf[local_option_name] = local_option_value
+
+        local_conf_resolved = \
+            resolve_local_conf_options(global_conf, local_conf)
+
+        eq_(
+            'The value is global_option_value',
+            local_conf_resolved[local_option_name],
+            )
+
+    def test_substituting_non_existing_global_option(self):
+        global_conf = get_global_conf('read_only_empty_module')
+
+        local_conf = get_local_conf()
+        local_option_name = 'SETTING1'
+        global_option_name = 'global_option_name'
+        local_option_value = '"The value is ${%s}"' % global_option_name
+        local_conf[local_option_name] = local_option_value
+
+        assert_raises_regexp(
+            InvalidSettingValueError,
+            local_option_name + '.+' + global_option_name,
+            resolve_local_conf_options,
+            global_conf,
+            local_conf,
+            )
+
+    def test_escaping(self):
+        global_conf = get_global_conf('read_only_empty_module')
+
+        local_conf = get_local_conf()
+        option_name = 'SETTING1'
+        option_value = '"$${var}"'
+        local_conf[option_name] = option_value
+
+        local_conf_resolved = \
+            resolve_local_conf_options(global_conf, local_conf)
+
+        eq_('${var}', local_conf_resolved[option_name])
+
+    def test_substitution_done_before_json_conversion(self):
+        global_option_name = 'global_option_name'
+        global_option_value = '1'
+        global_conf = get_global_conf(
+            'read_only_empty_module',
+            **{global_option_name: global_option_value}
+            )
+
+        local_conf = get_local_conf()
+        local_option_name = 'SETTING1'
+        local_option_value = '${%s}' % global_option_name
+        local_conf[local_option_name] = local_option_value
+
+        local_conf_resolved = \
+            resolve_local_conf_options(global_conf, local_conf)
+
+        eq_(1, local_conf_resolved[local_option_name])
+
+
 def test_unsupported_settings():
     global_conf = get_global_conf('read_only_empty_module')
 
@@ -167,3 +251,14 @@ def test__file__is_ignored():
 
     assert_in('paste_configuration_file', local_conf_resolved)
     eq_(local_conf_resolved['paste_configuration_file'], 'conf.ini')
+
+
+def test_original_local_conf_unchanged():
+    global_conf = get_global_conf('read_only_empty_module')
+    local_conf = get_local_conf()
+
+    local_conf_copy = local_conf.copy()
+
+    resolve_local_conf_options(global_conf, local_conf)
+
+    eq_(local_conf_copy, local_conf)
