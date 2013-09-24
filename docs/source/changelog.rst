@@ -6,6 +6,8 @@ Version 1.0 Release Candidate 2 (2013-09-24)
 ============================================
 
 - Introduced new syntax to do variable substitution (``${variable_name}``).
+- Introduced the function
+  :func:`~django_pastedeploy_settings.resolve_local_conf_options`.
 
 
 Version 1.0 Release Candidate 1 (2013-06-20)

@@ -26,14 +26,15 @@ import re
 from paste.deploy.loadwsgi import appconfig
 
 
+# The order is important to Sphinx' autodoc extension.
 __all__ = [
+    'resolve_local_conf_options',
+    'get_configured_django_wsgi_app',
     'BadDebugFlagError',
     'InvalidSettingValueError',
     'MissingDjangoSettingsModuleError',
     'SettingException',
     'UnsupportedDjangoSettingError',
-    'get_configured_django_wsgi_app',
-    'resolve_local_conf_options',
     ]
 
 
@@ -52,6 +53,27 @@ _OPTION_REFERENCE_REGEX = re.compile(r"""
 
 
 def resolve_local_conf_options(global_conf, local_conf):
+    """
+    Return the final values for the items in ``local_conf``.
+
+    :raises ImportError: If the Django settings module cannot be imported.
+    :raises UnsupportedDjangoSettingError: If ``local_conf`` contains a Django
+        setting which is not supported.
+    :raises MissingDjangoSettingsModuleError: If the ``django_settings_module``
+        option is not set.
+    :raises BadDebugFlagError: If Django's ``DEBUG`` is set instead of Paste's
+        ``debug``.
+    :return: ``local_conf`` with its values deserialized from JSON and
+        variable references resolved
+    :rtype: :class:`dict`
+
+    The result also includes the following items:
+
+    - ``DEBUG``: Copied from ``global_conf['debug']``.
+    - ``paste_configuration_file``: The path to the PasteDeploy configuration
+      file used.
+
+    """
     _validate_debug_data(global_conf, local_conf)
     _require_supported_options_only(local_conf)
 
@@ -71,15 +93,12 @@ def get_configured_django_wsgi_app(global_conf, **local_conf):
     """
     Load the Django application for use in a WSGI server.
 
-    :raises ImportError: If the Django settings module cannot be imported.
-    :raises UnsupportedDjangoSettingError: If ``local_conf`` contains a Django
-        setting which is not supported.
-    :raises MissingDjangoSettingsModuleError: If the ``django_settings_module``
-        option is not set.
-    :raises BadDebugFlagError: If Django's ``DEBUG`` is set instead of Paste's
-        ``debug``.
     :return: The WSGI application for Django as returned by
         :func:`~django.core.servers.basehttp.get_internal_wsgi_application`.
+
+    Internally, this uses :func:`resolve_local_conf_options` and stores the
+    result as Django settings. Any exceptions raised by that function are also
+    propagated.
 
     """
     _set_up_settings(global_conf, local_conf)
