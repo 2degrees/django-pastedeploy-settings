@@ -33,21 +33,22 @@ a complete example <_static/simplest-settings.ini>`.
 
 It does not define any option that can be used by Django or your application,
 apart from ``debug``. Note this option is lower case: That's the de-facto
-spelling for this variable in the WSGI world. *django-pastedeploy-settings* will
+spelling for this in the WSGI world. *django-pastedeploy-settings* will
 automatically set Django's ``DEBUG`` to that value.
 
 Sections with the ``app:`` prefix contain the settings for WSGI applications.
+In the context of INI files, these definitions are referred to as *options*.
 Whenever you reference a PasteDeploy file, you have to specify the application
 to be used, or else it'll default to ``main`` (if it exists). All the options
 defined in the specified ``app:*`` section will be converted to Django settings,
 with the values converted from JSON (except for the options ``use`` and
 ``paste.app_factory`` which are only used by PasteDeploy).
 
-The ``DEFAULT`` section is special. There you can define variables to be
-substituted in other sections, as well as some meta variables for Paste,
-*django-pastedeploy-settings* or other 3rd party software. The values set in
-this section are never parsed as JSON strings; they'll always be raw strings
-and therefore don't need to be quoted.
+The ``DEFAULT`` section is special. The options defined here can be used as
+variables to be substituted in other sections, as well as some meta options for
+Paste, *django-pastedeploy-settings* or other 3rd party software. Except for
+``debug``, the values set in this section aren't parsed as JSON strings;
+they'll always be raw strings and therefore don't need to be quoted.
 
 You can have more than one set of settings for your Django application. If,
 for example, you wanted to be able to use your application in development and
@@ -67,7 +68,7 @@ deployment mode, you could use a configuration like this:
     set debug = true
 
 Because we need to toggle the value of ``DEBUG`` from the configuration file,
-you must remove this variable from your settings module. If you have variables
+you must remove this variable from your settings module. If you have options
 which depend on this value, you can still refer to it like this:
 
 .. code-block:: ini
@@ -78,7 +79,7 @@ which depend on this value, you can still refer to it like this:
     
     [app:main]
     use = egg:django-pastedeploy-settings
-    TEMPLATE_DEBUG = %(debug)s
+    TEMPLATE_DEBUG = ${debug}
     
     [app:development]
     use = main
@@ -94,13 +95,13 @@ Or, you can override them on a per application basis:
     
     [app:main]
     use = egg:django-pastedeploy-settings
-    TEMPLATE_debug = false
+    TEMPLATE_DEBUG = false
     
     [app:development]
     use = main
     set debug = true
     # TEMPLATE_DEBUG will be false unless we override it:
-    TEMPLATE_debug = true
+    TEMPLATE_DEBUG = true
 
 
 You can then use the values the same way you've been doing it, with Django's
@@ -134,8 +135,44 @@ module or :ref:`create your own factory <custom-factory>` to convert the values
 by yourself.
 
 
+Variable substitution
+=====================
+
+You can create variables by defining them as options in the ``DEFAULT`` section
+of your configuration file. You'll then be able to refer to these values by
+using the syntax ``${variable_name}``. To escape a string which otherwise would
+be interpreted as a variable, use the syntax ``$${not_a_variable_name}``.
+
+For example:
+
+.. code-block:: ini
+
+    [DEFAULT]
+    debug = false
+    django_settings_module = your_django_project.settings
+    admin_email = user@example.com
+    
+    [app:main]
+    use = egg:django-pastedeploy-settings
+    DEFAULT_FROM_EMAIL = "${admin_email}"
+    
+    # The following will result in the string "${django} " (without quotes).
+    EMAIL_SUBJECT_PREFIX = "$${django} "
+
+The syntax to refer to variables is specific to *django-pastedeploy-settings*.
+The syntax supported by PasteDeploy is ``%(variable_name)s``, and it's
+discouraged by the developers of this library because:
+
+#. It's not a good idea to mix the two syntaxes in your files, for
+   maintainability reasons.
+#. Given the way PasteDeploy handles variable substitution, the options defined
+   in the ``DEFAULT`` section may not always be ready to be used as variables
+   when they're referenced. With our approach, you don't need to worry about
+   this.
+
+
 Implicit Variables
-==================
+------------------
 
 There are a couple of variables defined by PasteDeploy which you can refer to
 in your configuration.
@@ -149,7 +186,7 @@ contains the INI file. You can use it like this:
     
     [app:main]
     use = egg:django-pastedeploy-settings
-    MEDIA_ROOT = %(here)s/media
+    MEDIA_ROOT = "${here}/media"
     
     # (...)
 

@@ -2,6 +2,12 @@
 Releases
 ========
 
+Version 1.0 Release Candidate 2 (2013-09-24)
+============================================
+
+- Introduced new syntax to do variable substitution (``${variable_name}``).
+
+
 Version 1.0 Release Candidate 1 (2013-06-20)
 ============================================
 

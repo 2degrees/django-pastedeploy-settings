@@ -28,7 +28,7 @@ Features
 - Integration with `Buildout <http://www.buildout.org/>`_, so that you can
   expose your Django settings to Buildout parts.
 - Integration with `Nose <https://nose.readthedocs.org/en/latest/>`_, so that
-  you can easily set the settings to be used by your test suites.
+  you can easily set the Django settings to be used by your test suites.
 
 
 Example
@@ -48,7 +48,7 @@ You can keep the following file in your project's repository:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "%(sqlite_db_path)s",
+            "NAME": "${sqlite_db_path}",
             }
         }
 
@@ -95,7 +95,7 @@ Alternatively, you can keep it all in one file:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME": "%(sqlite_db_path)s",
+            "NAME": "${sqlite_db_path}",
             }
         }
     
