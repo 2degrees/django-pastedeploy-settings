@@ -58,19 +58,19 @@ setup(
         ],
     extras_require={
         'nose-buildout': ["zc.recipe.egg >= 1.2.2"],
-        'buildout-options': ["deployrecipes >= 1.0rc2"],
+        'buildout-options': ["deployrecipes >= 1.0"],
         },
     test_suite="nose.collector",
     entry_points="""\
         [paste.app_factory]
         main = django_pastedeploy_settings:get_configured_django_wsgi_app
-        
+
         [paste.composite_factory]
         full_django = django_pastedeploy_settings.factories:make_full_django_app
-        
+
         [nose.plugins.0.10]
         paste-deploy-config = django_testing:DjangoPastedeployPlugin
-        
+
         [zc.buildout]
         nose = django_testing_recipe:DjangoPastedeployRecipe [nose-buildout]
         django-settings = django_pastedeploy_settings.buildout_options:DecodedConfvarsRecipe [buildout-options]
