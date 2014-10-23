@@ -17,7 +17,9 @@
 
 import os
 
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
+
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, "README.rst")).read()
@@ -29,7 +31,7 @@ setup(
     description="Conversion of Paste Deployment configuration to Django settings",
     long_description=README,
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Framework :: Django",
         "Framework :: Paste",

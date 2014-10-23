@@ -2,6 +2,12 @@
 Releases
 ========
 
+Version 1.0 (2014-10-23)
+========================
+
+- Removed upper limit for required versions of Paste and PasteDeploy.
+
+
 Version 1.0 Release Candidate 2 (2013-09-24)
 ============================================
 
