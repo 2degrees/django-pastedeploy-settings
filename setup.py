@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2010, 2013, 2degrees Limited.
+# Copyright (c) 2010-2014, 2degrees Limited.
 # All Rights Reserved.
 #
 # This file is part of django-pastedeploy-settings
@@ -52,8 +52,8 @@ setup(
     tests_require=["nose", "coverage"],
     install_requires=[
         "Django >= 1.4",
-        "PasteDeploy >= 1.3.3, <= 1.5.0",
-        "Paste >= 1.7.2, <= 1.7.5.1",
+        "PasteDeploy >= 1.3.3",
+        "Paste >= 1.7.2",
         "setuptools",
         ],
     extras_require={
