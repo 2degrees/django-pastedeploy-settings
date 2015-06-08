@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2010-2014, 2degrees Limited.
+# Copyright (c) 2010-2015, 2degrees Limited.
 # All Rights Reserved.
 #
 # This file is part of django-pastedeploy-settings
@@ -51,7 +51,6 @@ setup(
     packages=find_packages(exclude=["tests"]),
     py_modules=["django_testing", "django_testing_recipe"],
     zip_safe=False,
-    tests_require=["nose", "coverage"],
     install_requires=[
         "Django >= 1.4",
         "PasteDeploy >= 1.3.3",
