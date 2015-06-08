@@ -2,6 +2,12 @@
 Releases
 ========
 
+Version 1.0.1 (2015-06-08)
+==========================
+
+- Added compatibility with Python 3.
+
+
 Version 1.0 (2014-10-23)
 ========================
 

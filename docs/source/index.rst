@@ -29,6 +29,7 @@ Features
   expose your Django settings to Buildout parts.
 - Integration with `Nose <https://nose.readthedocs.org/en/latest/>`_, so that
   you can easily set the Django settings to be used by your test suites.
+- Compatible with Python v2.7 and v3, and Django 1.4 or later.
 
 
 Example
@@ -113,12 +114,6 @@ Alternatively, you can keep it all in one file:
     set sqlite_db_path = /production/your-project.db
     
     SECRET_KEY = "str0ng k3y"
-
-Requirements
-------------
-
-- Python 2.5 or later. Python v3 isn't officially supported, but might work.
-- Django 1.4 or later.
 
 
 Contents

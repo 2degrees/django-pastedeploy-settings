@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2010, 2013, 2degrees Limited.
+# Copyright (c) 2010-2015, 2degrees Limited.
 # All Rights Reserved.
 #
 # This file is part of django-pastedeploy-settings
@@ -220,7 +220,7 @@ def _get_option_values_dereferenced(global_conf, local_conf):
                 lambda match: _resolve_option_reference(match, global_conf),
                 local_option_value,
                 )
-        except _NonExistingReferencedOptionError, exc:
+        except _NonExistingReferencedOptionError as exc:
             raise InvalidSettingValueError(
                 'Option "%s" references non-existing global option "%s"' % (
                     local_option_name,
