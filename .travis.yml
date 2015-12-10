@@ -10,6 +10,6 @@ python:
 install: pip install .
 before_script:
   - pip install -r tests/requirements.txt --use-mirrors
-script:  coverage run --source=pyrecord setup.py test
+script:  coverage run --source=django_pastedeploy_settings setup.py test
 after_success:
   - coveralls
