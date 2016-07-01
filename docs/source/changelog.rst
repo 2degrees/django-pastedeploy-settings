@@ -2,6 +2,14 @@
 Releases
 ========
 
+Version 1.0.2 (2016-07-01)
+==========================
+
+- Deprecated ``--no-db`` in Nose plugin in favour of Django test runner's
+  ``--keepdb``.
+- The test database is unconditionally set up.
+
+
 Version 1.0.1 (2015-06-08)
 ==========================
 

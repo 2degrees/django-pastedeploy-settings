@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
-# Copyright (c) 2010, 2013, 2degrees Limited.
+# Copyright (c) 2010-2016, 2degrees Limited.
 # All Rights Reserved.
 #
 # This file is part of django-pastedeploy-settings
@@ -21,6 +21,8 @@ This module has no automated tests on purpose. Functional tests would be very
 useful.
 
 """
+from warnings import warn
+
 from nose.plugins import Plugin
 from paste.deploy import loadapp
 
@@ -41,38 +43,46 @@ class DjangoPastedeployPlugin(Plugin):
     enableOpt = "paste_config_uri"
     
     def options(self, parser, env):
-        help = (
-            "Load the Django application described by the PasteDeploy "
-            "configuration URI in a WSGI environment suitable for testing."
-        )
-        
+        # Mention "Django" in the argument help texts to give more context to
+        # the user
+
         parser.add_option(
             "--%s" % self.name,
             type="string",
             default="",
             dest=self.enableOpt,
-            help=help,
+            help="Load the Django application described by the PasteDeploy "
+                "configuration URI in a WSGI environment suitable for testing.",
             )
-        
+
         parser.add_option(
             "--no-db",
+            action="store_false",
+            default=True,
+            dest="create_db",
+            help="Do not set up a Django test database (deprecated)",
+            )
+
+        parser.add_option(
+            "--keepdb",
             action="store_true",
             default=False,
-            dest="no_db",
-            # We must mention "Django" so people know where the option comes
-            # from:
-            help="Do not set up a Django test database",
+            dest="keep_db",
+            help="Keep the Django test database between runs",
             )
     
     def configure(self, options, conf):
         """Store the URI to the PasteDeploy configuration."""
         super(DjangoPastedeployPlugin, self).configure(options, conf)
-        
+
+        if not options.create_db:
+            warn("--no-db is deprecated in favour of --keepdb")
+
         self.paste_config_uri = getattr(options, self.enableOpt)
         self.enabled = bool(self.paste_config_uri)
         self.verbosity = options.verbosity
-        self.create_db = not options.no_db
-    
+        self.keep_db = not options.create_db or options.keep_db
+
     def begin(self):
         # Set up the settings before using Django
         loadapp(self.paste_config_uri)
@@ -93,14 +103,13 @@ class DjangoPastedeployPlugin(Plugin):
         teardown_test_environment()
     
     def _create_test_databases(self):
-        if self.create_db:
-            from django.conf import settings
-            from django.test.utils import get_runner
-            TestRunner = get_runner(settings)
-            self.test_runner = TestRunner(self.verbosity, interactive=False)
-            self.db_config = self.test_runner.setup_databases()
+        from django.conf import settings
+        from django.test.utils import get_runner
+
+        TestRunner = get_runner(settings)
+        self.test_runner = \
+            TestRunner(self.verbosity, keepdb=self.keep_db, interactive=False)
+        self.db_config = self.test_runner.setup_databases()
     
     def _remove_test_databases(self):
-        if self.create_db:
-            self.test_runner.teardown_databases(self.db_config)
-
+        self.test_runner.teardown_databases(self.db_config)
